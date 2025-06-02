@@ -1,0 +1,441 @@
+:root {
+  --base-clr: #11121a;
+  --line-clr: #42434a;
+  --hover-clr: #222533;
+  --text-clr: #e6e6ef;
+  --accent-clr: #5e63ff;
+  --secondary-text-clr: #b0b3c1;
+}
+
+/* General styles */
+.home-page {
+  display: flex;
+  background-color: var(--base-clr);
+  color: var(--text-clr);
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* Prevent page scrolling */
+}
+
+/* Scrollable form container with hidden scrollbar */
+.dictionary-container {
+  flex: 1;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Webkit browsers */
+.dictionary-container::-webkit-scrollbar {
+  display: none;
+}
+
+h2 {
+  color: var(--text-clr);
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  border-bottom: 1px solid var(--line-clr);
+  padding-bottom: 0.5rem;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--secondary-text-clr);
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line-clr);
+  border-radius: 4px;
+  color: var(--text-clr);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-clr);
+  box-shadow: 0 0 0 3px rgba(94, 99, 255, 0.25);
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Student selection styles */
+.student-selection {
+  display: flex;
+  gap: 1rem;
+}
+
+.student-selection .form-control {
+  flex: 1;
+}
+
+.btn {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--accent-clr);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-clr);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--hover-clr);
+  color: var(--text-clr);
+}
+
+.btn-secondary:hover {
+  background-color: var(--line-clr);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Tag styles */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.tag-checkbox {
+  position: relative;
+}
+
+.tag-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.tag-checkbox label {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--hover-clr);
+  border: 1px solid var(--line-clr);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Modified tag styles - no transform or box shadow */
+.tag-checkbox input[type="checkbox"]:checked + label {
+  background-color: var(--accent-clr);
+  border-color: var(--accent-clr);
+  color: white;
+}
+
+.tag-checkbox input[type="checkbox"]:focus + label {
+  outline: 1px solid var(--accent-clr);
+}
+
+.tag-checkbox:hover label {
+  background-color: var(--line-clr);
+}
+
+/* Errors */
+.error-message {
+  color: #ff5e5e;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.tag-checkbox input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.tag-checkbox input[type="radio"] + label {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--hover-clr);
+  border: 1px solid var(--line-clr);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.tag-checkbox input[type="radio"]:checked + label {
+  background-color: var(--accent-clr);
+  border-color: var(--accent-clr);
+  color: white;
+}
+
+.tag-checkbox input[type="radio"]:focus + label {
+  outline: 1px solid var(--accent-clr);
+}
+
+/* Override any browser-specific radio button styles */
+.tag-checkbox input[type="radio"]::before,
+.tag-checkbox input[type="radio"]::after {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sidebar for student selection */
+/* Sidebar animation */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Start off-screen */
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background-color: var(--base-clr);
+  border-left: 1px solid var(--line-clr);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  transition: right 0.3s ease-in-out;
+}
+
+.sidebar.open {
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    right: -100%;
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--line-clr);
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  color: var(--text-clr);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--secondary-text-clr);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.close-btn:hover {
+  color: var(--text-clr);
+}
+
+.sidebar-content {
+  padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Improved Search Box */
+.search-box {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line-clr);
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.search-box:focus-within {
+  border-color: var(--accent-clr);
+  box-shadow: 0 0 0 2px rgba(94, 99, 255, 0.15);
+}
+
+.search-box input {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  color: var(--text-clr);
+  font-size: 1rem;
+  padding: 0.25rem 0;
+}
+
+.search-box input:focus {
+  outline: none;
+}
+
+.search-box input::placeholder {
+  color: var(--secondary-text-clr);
+  opacity: 0.7;
+}
+
+.search-box button {
+  background-color: var(--accent-clr);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.search-box button:hover {
+  background-color: #6b6fff;
+}
+
+.search-box button:active {
+  transform: scale(0.98);
+}
+
+/* Enhanced Student List */
+.student-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.student-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.student-list::-webkit-scrollbar-track {
+  background: var(--base-clr);
+}
+
+.student-list::-webkit-scrollbar-thumb {
+  background-color: var(--line-clr);
+  border-radius: 3px;
+}
+
+.student-item {
+  padding: 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+}
+
+.student-item:hover {
+  background-color: var(--hover-clr);
+  border-color: var(--line-clr);
+}
+
+.student-item:active {
+  background-color: rgba(94, 99, 255, 0.1);
+  border-color: var(--accent-clr);
+}
+
+/* Form actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .dictionary-container {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dictionary-container {
+    padding: 1rem;
+    max-height: 85vh;
+  }
+
+  .student-selection {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .sidebar {
+    max-width: 100%;
+  }
+
+  .form-actions {
+    justify-content: center;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .dictionary-container {
+    padding: 0.75rem;
+    max-height: 80vh;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .tags-container {
+    gap: 0.5rem;
+  }
+
+  .tag-checkbox label {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .form-control {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}

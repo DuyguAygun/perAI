@@ -1,0 +1,139 @@
+<div class="home-page">
+  <app-sidebar></app-sidebar>
+  <div class="dictionary-container">
+    <div class="dictionary-header">
+      <h2>My Word Dictionary</h2>
+      <p class="subtitle">Track your learning progress and review words you've been working on</p>
+    </div>
+
+    <!-- Search and filter bar -->
+    <div class="search-filter-container">
+      <div class="search-box">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="applyFilters()"
+          placeholder="Search words..."
+          class="form-control">
+      </div>
+
+      <div class="filters">
+        <div class="filter-group">
+          <label for="topicFilter">Topic:</label>
+          <select
+            id="topicFilter"
+            [(ngModel)]="selectedTopicTag"
+            (ngModelChange)="applyFilters()"
+            class="form-control">
+            <option value="">All Topics</option>
+            <option *ngFor="let tag of topicTags" [value]="tag">{{ tag }}</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="errorFilter">Error Type:</label>
+          <select
+            id="errorFilter"
+            [(ngModel)]="selectedErrorTag"
+            (ngModelChange)="applyFilters()"
+            class="form-control">
+            <option value="">All Errors</option>
+            <option *ngFor="let tag of errorTags" [value]="tag">{{ tag }}</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="learningFilter">Status:</label>
+          <select
+            id="learningFilter"
+            [(ngModel)]="selectedLearningTag"
+            (ngModelChange)="applyFilters()"
+            class="form-control">
+            <option value="">All</option>
+            <option *ngFor="let tag of learningTags" [value]="tag">{{ tag }}</option>
+          </select>
+        </div>
+
+        <button class="btn btn-secondary" (click)="resetFilters()">Reset</button>
+      </div>
+    </div>
+
+    <!-- Sort options -->
+    <div class="sort-container">
+      <span class="sort-label">Sort by:</span>
+      <button
+        class="sort-btn"
+        [class]="getSortIconClass('date')"
+        (click)="updateSort('date')">
+        Date
+      </button>
+      <button
+        class="sort-btn"
+        [class]="getSortIconClass('alphabetical')"
+        (click)="updateSort('alphabetical')">
+        Word
+      </button>
+    </div>
+
+    <!-- Loading and error states -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading your dictionary...</p>
+    </div>
+
+    <div *ngIf="error" class="error-state">
+      <p>{{ error }}</p>
+      <button class="btn btn-secondary" (click)="fetchDictionaryEntries()">Try Again</button>
+    </div>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && !error && filteredEntries.length === 0" class="empty-state">
+      <div class="empty-illustration">📚</div>
+      <h3>No words found</h3>
+      <p *ngIf="searchTerm || selectedTopicTag || selectedErrorTag || selectedLearningTag">
+        Try adjusting your filters to see more results
+      </p>
+      <p *ngIf="!searchTerm && !selectedTopicTag && !selectedErrorTag && !selectedLearningTag">
+        Your dictionary is empty. Your teacher will add words as you learn together.
+      </p>
+    </div>
+
+    <!-- Dictionary entries -->
+    <div class="dictionary-entries" *ngIf="!isLoading && !error && filteredEntries.length > 0">
+      <div class="entry-card" *ngFor="let entry of filteredEntries">
+        <div class="entry-header">
+          <h3 class="word">{{ entry.word }}</h3>
+          <span class="date">{{ formatDate(entry.date) }}</span>
+        </div>
+
+        <div class="mistake-description">
+          <h4>Mistake Description:</h4>
+          <p>{{ entry.mistakeDescription }}</p>
+        </div>
+
+        <div class="tags-section">
+          <div class="tag-group">
+            <h4>Topics:</h4>
+            <div class="tags-container">
+              <span class="tag topic-tag" *ngFor="let tag of entry.topicTags">{{ tag }}</span>
+            </div>
+          </div>
+
+          <div class="tag-group">
+            <h4>Error Types:</h4>
+            <div class="tags-container">
+              <span class="tag error-tag" *ngFor="let tag of entry.errorTags">{{ tag }}</span>
+            </div>
+          </div>
+
+          <div class="tag-group">
+            <h4>Status:</h4>
+            <div class="tags-container">
+              <span class="tag learning-tag" *ngFor="let tag of entry.learningTags">{{ tag }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

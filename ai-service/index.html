@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Canlı Mikrofon Altyazı Uygulaması</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Canlı Mikrofon Altyazı Uygulaması</h1>
+
+    <div class="language-selector">
+      <select id="language-select">
+        <option value="tr-TR">Türkçe</option>
+        <option value="en-US">English (US)</option>
+        <option value="en-GB">English (UK)</option>
+        <option value="fr-FR">Français</option>
+        <option value="de-DE">Deutsch</option>
+        <option value="es-ES">Español</option>
+        <option value="it-IT">Italiano</option>
+        <option value="ja-JP">日本語</option>
+        <option value="ko-KR">한국어</option>
+        <option value="ru-RU">Русский</option>
+      </select>
+    </div>
+
+    <div class="caption-area">
+      <div id="caption">Mikrofon algılaması başladığında burada altyazılar görünecek</div>
+    </div>
+
+    <div id="status">Başlamak için mikrofon erişimine izin verin ve "Mikrofonu Aç" düğmesine tıklayın.</div>
+
+    <div class="controls">
+      <button id="start-btn">Mikrofonu Aç</button>
+      <button id="stop-btn" disabled>Durdur</button>
+      <button id="clear-btn">Temizle</button>
+    </div>
+
+    <div class="settings">
+      <h3>Ayarlar</h3>
+      <div class="settings-row">
+        <div class="setting-label">Sürekli Dinleme</div>
+        <div class="setting-control">
+          <input type="checkbox" id="continuous-mode" checked>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div class="setting-label">Geçici Sonuçları Göster</div>
+        <div class="setting-control">
+          <input type="checkbox" id="show-interim" checked>
+        </div>
+      </div>
+    </div>
+
+    <h3>Konuşma Geçmişi</h3>
+    <div class="transcript-history" id="transcript-history">
+      <p>Henüz konuşma kaydedilmedi.</p>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

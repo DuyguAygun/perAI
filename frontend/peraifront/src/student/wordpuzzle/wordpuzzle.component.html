@@ -1,0 +1,47 @@
+<!-- wordpuzzle.component.html -->
+<div class="home-page">
+  <app-sidebar></app-sidebar>
+  <main>
+    <div class="learnbody">
+      <div id="box1" class="learnbodybox">
+        <h1 class="box-title">Word List</h1>
+        <ul class="box-list">
+          <li *ngFor="let word of words"
+              [class.selected]="selectedWord?.word === word.word"
+              (click)="selectWord(word)">
+            {{ word.scrambledWord }}
+          </li>
+        </ul>
+      </div>
+
+      <h3
+        id="result"
+        [ngStyle]="{ color: resultMessage === 'Wrong !' ? '#ff3737' : '#69ff65' }">
+        {{ resultMessage }}
+      </h3>
+
+      <div id="box2" class="learnbodybox">
+        <input type="text"
+               [(ngModel)]="userAnswer"
+               placeholder="Correct The Words !"
+               (keyup.enter)="checkAnswer()"
+               [disabled]="!selectedWord">
+      </div>
+
+      <input type="button"
+             value="Check !"
+             id="sendAnswer"
+             (click)="checkAnswer()"
+             [disabled]="!selectedWord">
+
+      <div id="box3" class="learnbodybox">
+        <h1 class="box-title">Good Job !</h1>
+        <ul class="box-list">
+          <li *ngFor="let word of correctWords">
+            {{ word.word }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>

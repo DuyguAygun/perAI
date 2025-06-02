@@ -1,0 +1,172 @@
+<!-- chat-interface.component.html -->
+<div class="chat-interface">
+  <app-sidebar></app-sidebar>
+  <main>
+    <div class="container">
+      <h2>Chat Interface</h2>
+
+      <div class="chat-section">
+        <div class="chat-container" #chatContainer>
+          <!-- Chat messages -->
+          <div *ngFor="let message of messages"
+               [ngClass]="{'message': true, 'user-message': message.sender === 'user', 'assistant-message': message.sender === 'assistant'}">
+            <div [innerHTML]="message.message"></div>
+            <div class="message-time">{{ message.timestamp | date:'short' }}</div>
+
+            <!-- Word form embedded in chat - Updated to match dictionary component -->
+            <div *ngIf="message.type === 'word-form' && showWordForm" class="word-form-container">
+              <form [formGroup]="dictionaryForm" (ngSubmit)="onSubmit()">
+                <!-- Word input -->
+                <div class="form-group">
+                  <label for="word" class="form-label">Word</label>
+                  <input type="text" id="word" class="form-control" formControlName="word">
+                  <div *ngIf="isFieldInvalid('word')" class="error-message">
+                    {{ getErrorMessage('word') }}
+                  </div>
+                </div>
+
+                <!-- Student selection -->
+                <div class="form-group">
+                  <label for="userId" class="form-label">Student</label>
+                  <div class="student-selection">
+                    <input
+                      type="text"
+                      id="userId"
+                      class="form-control"
+                      placeholder="Select a student..."
+                      [(ngModel)]="searchTerm"
+                      [ngModelOptions]="{standalone: true}"
+                      (focus)="searchStudents('')">
+
+                    <!-- Hidden input to actually store the userId value -->
+                    <input type="hidden" formControlName="userId">
+
+                    <button type="button" class="btn btn-secondary" (click)="showStudentSelector($event)">Select Student</button>
+                  </div>
+                  <div *ngIf="isFieldInvalid('userId')" class="error-message">
+                    {{ getErrorMessage('userId') }}
+                  </div>
+                </div>
+
+                <!-- Mistake description -->
+                <div class="form-group">
+                  <label for="mistakeDescription" class="form-label">Mistake Description</label>
+                  <textarea id="mistakeDescription" class="form-control" formControlName="mistakeDescription"></textarea>
+                  <div *ngIf="isFieldInvalid('mistakeDescription')" class="error-message">
+                    {{ getErrorMessage('mistakeDescription') }}
+                  </div>
+                </div>
+
+                <!-- Topic tags -->
+                <div class="form-group">
+                  <label class="form-label">Topic Tags</label>
+                  <div class="tags-container">
+                    <div *ngFor="let tag of topicTags" class="tag-checkbox">
+                      <input
+                        type="checkbox"
+                        [id]="'topic-' + tag"
+                        [checked]="isTagSelected('topicTags', tag)"
+                        (change)="onTagChange('topicTags', tag, $event)">
+                      <label [for]="'topic-' + tag">{{ tag }}</label>
+                    </div>
+                  </div>
+                  <div *ngIf="isFieldInvalid('topicTags')" class="error-message">
+                    {{ getErrorMessage('topicTags') }}
+                  </div>
+                </div>
+
+                <!-- Learning tags -->
+                <div class="form-group">
+                  <label class="form-label">Learning Status</label>
+                  <div class="tags-container">
+                    <div *ngFor="let tag of learningTags" class="tag-checkbox">
+                      <input
+                        type="radio"
+                        [id]="'learning-' + tag"
+                        name="learningTags"
+                        [checked]="isTagSelected('learningTags', tag)"
+                        (change)="onTagChange('learningTags', tag, $event)">
+                      <label [for]="'learning-' + tag">{{ tag }}</label>
+                    </div>
+                  </div>
+                  <div *ngIf="isFieldInvalid('learningTags')" class="error-message">
+                    {{ getErrorMessage('learningTags') }}
+                  </div>
+                </div>
+
+                <!-- Error tags -->
+                <div class="form-group">
+                  <label class="form-label">Error Tags</label>
+                  <div class="tags-container">
+                    <div *ngFor="let tag of errorTags" class="tag-checkbox">
+                      <input
+                        type="checkbox"
+                        [id]="'error-' + tag"
+                        [checked]="isTagSelected('errorTags', tag)"
+                        (change)="onTagChange('errorTags', tag, $event)">
+                      <label [for]="'error-' + tag">{{ tag }}</label>
+                    </div>
+                  </div>
+                  <div *ngIf="isFieldInvalid('errorTags')" class="error-message">
+                    {{ getErrorMessage('errorTags') }}
+                  </div>
+                </div>
+
+                <!-- Date -->
+                <div class="form-group">
+                  <label for="date" class="form-label">Date</label>
+                  <input type="date" id="date" class="form-control" formControlName="date">
+                  <div *ngIf="isFieldInvalid('date')" class="error-message">
+                    {{ getErrorMessage('date') }}
+                  </div>
+                </div>
+
+                <!-- Form buttons -->
+                <div class="form-actions">
+                  <button type="button" class="cancel-button" (click)="cancelWordForm()">Cancel</button>
+                  <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                    <span *ngIf="isLoading">Adding...</span>
+                    <span *ngIf="!isLoading">Add Word</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat input area -->
+        <div class="chat-input-container">
+          <input
+            type="text"
+            class="chat-input"
+            placeholder="Type a message..."
+            [(ngModel)]="currentMessage"
+            (keydown)="onKeyDown($event)">
+          <button class="send-button" (click)="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Student selection sidebar -->
+  <div #sidebar class="sidebar">
+    <div class="sidebar-header">
+      <h3>Select Student</h3>
+      <button type="button" class="close-btn" (click)="hideSidebar($event)">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="search-box">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Search students...">
+        <button type="button" (click)="searchStudents(searchTerm)">Search</button>
+      </div>
+      <div class="student-list">
+        <div *ngIf="studentsLoading">Loading students...</div>
+        <div *ngIf="studentsError" class="error-message">{{ studentsError }}</div>
+        <div *ngIf="!studentsLoading && !studentsError && students.length === 0">No students found</div>
+        <div *ngFor="let student of students" class="student-item" (click)="selectStudent(student.id); hideSidebar($event)">
+          {{ getFullName(student) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,215 @@
+:root {
+  --base-clr: #11121a;
+  --line-clr: #42434a;
+  --hover-clr: #222533;
+  --text-clr: #e6e6ef;
+  --accent-clr: #5e63ff;
+  --secondary-text-clr: #b0b3c1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5rem;
+}
+
+body {
+  min-height: 100vh;
+  background-image: url(../../public/background.png);
+  background-color: var(--base-clr);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--text-clr);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden; /* Hide scrollbars */
+}
+
+.container {
+  background-color: var(--base-clr);
+  max-width: 1200px; /* Back to original width */
+  width: 100%;
+  border: 1px solid var(--line-clr);
+  border-radius: 1em;
+  padding: min(3em, 15%);
+  opacity: 90%;
+  /* Scale the container to 80% of its original size */
+  transform: scale(0.8);
+  transform-origin: center;
+  /* Compensate for the scale reduction by increasing the apparent size */
+  height: auto;
+  overflow: hidden; /* Hide scrollbars */
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px; /* Reduced from 25px */
+}
+
+h1 {
+  font-size: 1.8rem; /* Reduced from 2rem */
+  font-weight: 700;
+  font-style: italic;
+  background: linear-gradient(to right, #ffc45f, #F08A5D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 30px; /* Reduced from 50px */
+}
+
+.intro h2 {
+  font-size: 1.5rem; /* Reduced from 1.8rem */
+  margin-bottom: 12px; /* Reduced from 15px */
+  font-weight: 600;
+}
+
+.intro p {
+  color: var(--secondary-text-clr);
+  margin-bottom: 20px; /* Reduced from 25px */
+  max-width: 700px; /* Reduced from 800px */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.get-started-btn {
+  display: inline-block;
+  background-color: var(--accent-clr);
+  color: var(--text-clr);
+  font-size: 0.95rem; /* Slightly reduced */
+  font-weight: 500;
+  padding: 10px 22px; /* Reduced from 12px 25px */
+  border-radius: 0.5em;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.3s;
+  border: none;
+  cursor: pointer;
+  font-family: Poppins, sans-serif;
+}
+
+.get-started-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 196, 95, 0.7);
+  background: linear-gradient(to right, #ffc45f, #F08A5D);
+}
+
+.levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px; /* Reduced from 20px */
+  margin-bottom: 30px; /* Reduced from 50px */
+  padding-bottom: 30px; /* Reduced from 40px */
+}
+
+.level-card {
+  flex: 1 1 250px; /* Reduced from 300px */
+  min-width: 220px; /* Reduced from 250px */
+  background-color: var(--base-clr);
+  border: 1px solid var(--line-clr);
+  border-radius: 1em;
+  padding: 20px; /* Reduced from 25px */
+  transition: all 0.3s ease;
+  position: relative;
+  bottom: 0;
+  margin-bottom: 15px; /* Reduced from 20px */
+}
+
+.level-card:hover {
+  bottom: 15px; /* Reduced from 20px */
+  background-color: var(--hover-clr);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Reduced shadow */
+  border-color: #ffc45f;
+}
+
+.level-card:hover h3 {
+  background: linear-gradient(to right, #ffc45f, #F08A5D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.level-card h3 {
+  font-size: 1.2rem; /* Reduced from 1.3rem */
+  color: var(--accent-clr);
+  margin-bottom: 12px; /* Reduced from 15px */
+  font-weight: 600;
+}
+
+.level-card p {
+  color: var(--secondary-text-clr);
+  font-size: 0.95rem; /* Slightly reduced */
+}
+
+.features {
+  text-align: center;
+  margin-top: 25px; /* Reduced from 30px */
+}
+
+.features h2 {
+  font-size: 1.4rem; /* Reduced from 1.5rem */
+  margin-bottom: 12px; /* Reduced from 15px */
+  font-weight: 600;
+}
+
+.features p {
+  color: var(--secondary-text-clr);
+  font-size: 0.95rem; /* Slightly reduced */
+}
+
+footer {
+  align-content: center;
+  margin-top: 30px; /* Reduced from 50px */
+  padding-top: 20px; /* Reduced from 25px */
+  border-top: 1px solid var(--line-clr);
+  color: var(--secondary-text-clr);
+  font-size: 0.85rem; /* Reduced from 0.9rem */
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .container {
+    border: none;
+    padding: 15px; /* Reduced from 20px */
+    width: 95%; /* Slightly increased from 90% for smaller screens */
+  }
+
+  .logo-wrapper {
+    flex-direction: column;
+    gap: 8px; /* Reduced from 10px */
+  }
+
+  h1 {
+    font-size: 1.4rem; /* Reduced from 1.5rem */
+  }
+
+  .intro h2 {
+    font-size: 1.4rem; /* Reduced from 1.5rem */
+  }
+
+  .level-card {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 8px; /* Reduced from 10px */
+  }
+
+  .container {
+    padding: 12px; /* Reduced from 15px */
+    width: 98%; /* Nearly full width on very small screens */
+  }
+}

@@ -1,0 +1,119 @@
+<div class="home-page">
+  <app-sidebar></app-sidebar>
+  <div class="dictionary-container">
+    <form [formGroup]="dictionaryForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="word">Word</label>
+        <input type="text" id="word" formControlName="word" class="form-control">
+        <div class="error-message" *ngIf="isFieldInvalid('word')">
+          {{ getErrorMessage('word') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="userId">Student</label>
+        <div class="student-selection">
+          <input type="text" id="userId" formControlName="userId" class="form-control" readonly
+                 [attr.placeholder]="'Select a student'">
+          <button type="button" class="btn btn-secondary" (click)="showSidebar($event)">Select Student</button>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('userId')">
+          {{ getErrorMessage('userId') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="mistakeDescription">Mistake Description</label>
+        <textarea id="mistakeDescription" formControlName="mistakeDescription" class="form-control"></textarea>
+        <div class="error-message" *ngIf="isFieldInvalid('mistakeDescription')">
+          {{ getErrorMessage('mistakeDescription') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Topic Tags</label>
+        <div class="tags-container">
+          <div *ngFor="let tag of topicTags" class="tag-checkbox">
+            <input type="checkbox"
+                   [id]="'topic-' + tag"
+                   [checked]="isTagSelected('topicTags', tag)"
+                   (change)="onTagChange('topicTags', tag, $event)">
+            <label [for]="'topic-' + tag">{{ tag }}</label>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('topicTags')">
+          {{ getErrorMessage('topicTags') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Learning Status</label>
+        <div class="tags-container">
+          <div *ngFor="let tag of learningTags" class="tag-checkbox">
+            <input type="radio"
+                   [id]="'learning-' + tag"
+                   [checked]="isTagSelected('learningTags', tag)"
+                   (change)="onTagChange('learningTags', tag, $event)">
+            <label [for]="'learning-' + tag">{{ tag }}</label>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('learningTags')">
+          {{ getErrorMessage('learningTags') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Error Tags</label>
+        <div class="tags-container">
+          <div *ngFor="let tag of errorTags" class="tag-checkbox">
+            <input type="checkbox"
+                   [id]="'error-' + tag"
+                   [checked]="isTagSelected('errorTags', tag)"
+                   (change)="onTagChange('errorTags', tag, $event)">
+            <label [for]="'error-' + tag">{{ tag }}</label>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('errorTags')">
+          {{ getErrorMessage('errorTags') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" formControlName="date" class="form-control">
+        <div class="error-message" *ngIf="isFieldInvalid('date')">
+          {{ getErrorMessage('date') }}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+          <span *ngIf="isLoading">Loading...</span>
+          <span *ngIf="!isLoading">Submit</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Sidebar for student selection -->
+    <div #sidebar class="sidebar">
+      <div class="sidebar-header">
+        <h3>Select Student</h3>
+        <button type="button" class="close-btn" (click)="hideSidebar($event)">&times;</button>
+      </div>
+      <div class="sidebar-content">
+        <div class="search-box">
+          <input type="text" [(ngModel)]="searchTerm" placeholder="Search students...">
+          <button type="button" (click)="searchStudents(searchTerm)">Search</button>
+        </div>
+        <div class="student-list">
+          <div *ngIf="studentsLoading">Loading students...</div>
+          <div *ngIf="studentsError" class="error-message">{{ studentsError }}</div>
+          <div *ngIf="!studentsLoading && !studentsError && students.length === 0">No students found</div>
+          <div *ngFor="let student of students" class="student-item" (click)="selectStudent(student.id); hideSidebar($event)">
+            {{ getFullName(student) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

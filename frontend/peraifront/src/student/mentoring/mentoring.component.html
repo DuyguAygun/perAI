@@ -1,0 +1,85 @@
+<!-- mentoring.component.html -->
+<div class="mentoring-page">
+  <app-sidebar></app-sidebar>
+  <main>
+    <div class="container">
+      <h2>AI Message Correction</h2>
+
+      <div class="chat-section">
+        <div class="chat-container" #chatContainer>
+          <!-- Chat messages -->
+          <div class="message-wrapper" *ngFor="let message of messages">
+            <!-- System message -->
+            <div class="message system-message" *ngIf="message.sender === 'system'">
+              <div class="message-content">
+                <div class="message-text" [innerHTML]="message.text"></div>
+                <div class="message-time">{{ message.timestamp | date:'shortTime' }}</div>
+              </div>
+            </div>
+
+            <!-- User message -->
+            <div class="message user-message" *ngIf="message.sender === 'user'">
+              <div class="user-avatar">{{ userInitials }}</div>
+              <div class="message-content">
+                <div class="message-text" [innerHTML]="message.text"></div>
+                <div class="message-time">{{ message.timestamp | date:'shortTime' }}</div>
+              </div>
+            </div>
+
+            <!-- Bot message -->
+            <div class="message bot-message" *ngIf="message.sender === 'bot'">
+              <div class="bot-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="message-content">
+                <!-- Markdown içerik için sınıf ekledik -->
+                <div class="message-text markdown-content" [innerHTML]="message.text"></div>
+                <div class="message-time">{{ message.timestamp | date:'shortTime' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading indicator -->
+          <div class="message-wrapper" *ngIf="isLoading">
+            <div class="message bot-message">
+              <div class="bot-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="message-content">
+                <div class="message-text">
+                  <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message input area -->
+        <div class="message-input-container">
+          <textarea
+            #messageInput
+            [(ngModel)]="currentMessage"
+            placeholder="Ask your academic mentor..."
+            (keydown)="handleKeyDown($event)"
+            (input)="onTextareaInput($event)"
+            class="message-input"
+            rows="1"
+          ></textarea>
+          <button class="send-button" (click)="sendMessage()" [disabled]="!currentMessage.trim() || isLoading">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
